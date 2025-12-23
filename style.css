@@ -1,39 +1,89 @@
-body {
-  font-family: Arial, sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
+* {
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
 }
 
-#monthTitle {
-  margin-bottom: 10px;
+body {
+  margin: 0;
+  background: radial-gradient(circle at top, #1e2a44, #0b1324);
+  color: #e5ecff;
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+#calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.app {
+  width: 900px;
+  background: linear-gradient(180deg, #121b33, #0d1428);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+}
+
+.top-bar h1 {
+  color: #7dd3fc;
+  margin-bottom: 20px;
+}
+
+.month-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 20px;
+}
+
+.month-nav h2 {
+  font-size: 22px;
+}
+
+.month-nav button {
+  background: none;
+  border: none;
+  color: #7dd3fc;
+  font-size: 30px;
+  cursor: pointer;
 }
 
 #calendar {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
-  margin-bottom: 10px;
+  gap: 12px;
+}
+
+.day-name {
+  text-align: center;
+  color: #94a3b8;
+  font-weight: 600;
 }
 
 .day {
-  border: 1px solid #aaa;
-  min-height: 60px;
-  padding: 5px;
-  text-align: center;
+  height: 60px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.day.header {
-  font-weight: bold;
-  background-color: #f0f0f0;
-}
-
-button {
-  padding: 5px 10px;
-  margin: 0 5px;
   cursor: pointer;
+  transition: 0.2s;
+}
+
+.day:hover {
+  background: rgba(125,211,252,0.15);
+}
+
+.day.selected {
+  background: #2563eb;
+  color: white;
+}
+
+.day.empty {
+  background: transparent;
+  cursor: default;
 }

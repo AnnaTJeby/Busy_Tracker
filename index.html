@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,15 +8,15 @@
 </head>
 <body>
 
-  <!-- Month Title -->
-  <h2 id="monthTitle"></h2>
+  <div id="calendar-wrapper">
+      <div class="month-nav">
+        <button id="prevBtn">‹</button>
+        <h2 id="monthYear"></h2>
+        <button id="nextBtn">›</button>
+      </div>
 
-  <!-- Calendar Grid -->
-  <div id="calendar"></div>
-
-  <!-- Navigation Buttons -->
-  <button id="prevMonth">Prev</button>
-  <button id="nextMonth">Next</button>
+      <div id="calendar"></div>
+    </div>
 
   <script src="script.js"></script>
 </body>

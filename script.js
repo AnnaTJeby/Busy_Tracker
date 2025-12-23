@@ -1,5 +1,6 @@
 const calendar = document.getElementById("calendar");
-const monthTitle = document.getElementById("monthTitle");
+const monthTitle = document.getElementById("monthYear");
+
 
 const WEEK_DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const MONTH_NAMES = [
@@ -9,7 +10,7 @@ const MONTH_NAMES = [
 ];
 
 let currentYear = 2026;
-let currentMonth = 0; // January
+let currentMonth = 0;
 
 // Render week headers
 function renderWeekHeaders() {
@@ -17,12 +18,12 @@ function renderWeekHeaders() {
   WEEK_DAYS.forEach(day => {
     const div = document.createElement("div");
     div.textContent = day;
-    div.classList.add("day", "header");
+    div.classList.add("day-name");
     calendar.appendChild(div);
   });
 }
 
-// Render calendar days
+// Render calendar
 function renderCalendar(year, month) {
   renderWeekHeaders();
 
@@ -31,31 +32,33 @@ function renderCalendar(year, month) {
 
   monthTitle.textContent = `${MONTH_NAMES[month]} ${year}`;
 
-  // Empty cells before Day 1
+  // Empty slots
   for (let i = 0; i < firstDayIndex; i++) {
     const empty = document.createElement("div");
-    empty.classList.add("day");
+    empty.classList.add("day", "empty");
     calendar.appendChild(empty);
   }
 
-  // Actual days
   const today = new Date();
+
   for (let day = 1; day <= daysInMonth; day++) {
     const dayCell = document.createElement("div");
     dayCell.classList.add("day");
     dayCell.textContent = day;
-    dayCell.dataset.date = `${year}-${month + 1}-${day}`;
 
-    // Highlight today
-    if (year === today.getFullYear() && month === today.getMonth() && day === today.getDate()) {
-      dayCell.style.backgroundColor = "#FFD700"; // gold
+    if (
+      day === today.getDate() &&
+      month === today.getMonth() &&
+      year === today.getFullYear()
+    ) {
+      dayCell.classList.add("selected");
     }
 
     calendar.appendChild(dayCell);
   }
 }
 
-// Navigation functions
+// Navigation
 function goToNextMonth() {
   currentMonth++;
   if (currentMonth > 11) {
@@ -74,9 +77,34 @@ function goToPrevMonth() {
   renderCalendar(currentYear, currentMonth);
 }
 
-// Button listeners
-document.getElementById("nextMonth").addEventListener("click", goToNextMonth);
-document.getElementById("prevMonth").addEventListener("click", goToPrevMonth);
+// Buttons (MATCH IDs)
+document.getElementById("nextBtn").addEventListener("click", goToNextMonth);
+document.getElementById("prevBtn").addEventListener("click", goToPrevMonth);
 
 // Initial render
 renderCalendar(currentYear, currentMonth);
+
+/* ===== SWIPE LOGIC ===== */
+const wrapper = document.getElementById("calendar-wrapper");
+
+let startX = 0;
+let endX = 0;
+
+wrapper.addEventListener("touchstart", e => {
+  startX = e.touches[0].clientX;
+});
+
+wrapper.addEventListener("touchend", e => {
+  endX = e.changedTouches[0].clientX;
+  handleSwipe();
+});
+
+function handleSwipe() {
+  const diff = startX - endX;
+
+  if (diff > 50) {
+    goToNextMonth();
+  } else if (diff < -50) {
+    goToPrevMonth();
+  }
+}
