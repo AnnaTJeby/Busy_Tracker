@@ -161,6 +161,9 @@ body {
 #event-overlay.hidden {
   display: none;
 }
+.hidden {
+  display: none;
+}
 
 /* Event box stays same square */
 .event-bar {
@@ -304,4 +307,29 @@ body {
 
 .switch input:checked + .slider::before {
   transform: translateX(22px);
+}
+.event-dot {
+  width: 6px;
+  height: 6px;
+  background: #38bdf8;
+  border-radius: 50%;
+  position: absolute;
+  bottom: 8px;
+}
+.day {
+  position: relative;
+}
+#deleteEventBtn {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: #2563eb;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#deleteEventBtn:hover {
+  background: #1d4ed8;
 }
