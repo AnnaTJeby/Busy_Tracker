@@ -25,8 +25,46 @@
     <div class="event-info">
       <span id="event-date-text">Selected Date</span>
     </div>
-    <button id="addEventBtn">Add Event</button>
+    <div class="event-content">
+
+  <label>
+    Title
+    <input type="text" id="eventTitle" placeholder="e.g. Project" />
+  </label>
+
+  <label>
+    Description
+    <textarea id="eventDesc" placeholder="Optional notes…"></textarea>
+  </label>
+
+  <div class="reminder-toggle">
+  <span>Set Reminder</span>
+
+  <label class="switch">
+    <input type="checkbox" id="reminderToggle">
+    <span class="slider"></span>
+  </label>
+</div>
+
+<div id="reminderSettings" class="hidden">
+  <label>
+    Remind me
+    <select id="reminderDays">
+      <option value="1">1 day before</option>
+      <option value="2">2 days before</option>
+      <option value="5">5 days before</option>
+    </select>
+  </label>
+
+  <label>
+    Time
+    <input type="time" id="reminderTime" />
+  </label>
+</div>
+
   </div>
+
+  <button id="saveEventBtn">Add Event</button>
 
   <script src="script.js"></script>
 </body>

@@ -110,3 +110,40 @@ addEventBtn.addEventListener("click", closeEvent);
 document.addEventListener("keydown",(e)=>{
   if(e.key==="Escape") closeEvent();
 });
+
+const saveEventBtn = document.getElementById("saveEventBtn");
+
+saveEventBtn.addEventListener("click", () => {
+  const title = document.getElementById("eventTitle").value.trim();
+  if (!title) {
+    alert("Please enter a title");
+    return;
+  }
+
+  const description = document.getElementById("eventDesc").value.trim();
+  const reminderOn = reminderToggle.checked;
+  
+  const eventData = {
+    title,
+    description,
+    reminder: reminderOn,
+    daysBefore: reminderOn ? document.getElementById("reminderDays").value : null,
+    time: reminderOn ? document.getElementById("reminderTime").value : null
+  };
+
+  const dateKey = eventText.textContent; // e.g. "January 5, 2026"
+  localStorage.setItem(dateKey, JSON.stringify(eventData));
+
+  closeEvent(); // reuse your existing function
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const reminderToggle = document.getElementById("reminderToggle");
+  const reminderSettings = document.getElementById("reminderSettings");
+
+  if (!reminderToggle || !reminderSettings) return;
+
+  reminderToggle.addEventListener("change", () => {
+    reminderSettings.classList.toggle("hidden", !reminderToggle.checked);
+  });
+});
