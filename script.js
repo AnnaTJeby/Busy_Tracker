@@ -1,13 +1,13 @@
 const calendar = document.getElementById("calendar");
 const monthTitle = document.getElementById("monthYear");
+const wrapper = document.getElementById("calendar-wrapper");
+const eventBar = document.getElementById("event-bar");
+const eventText = document.getElementById("event-date-text");
+const overlay = document.getElementById("event-overlay");
+const addEventBtn = document.getElementById("addEventBtn");
 
-
-const WEEK_DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-const MONTH_NAMES = [
-  "January", "February", "March", "April",
-  "May", "June", "July", "August",
-  "September", "October", "November", "December"
-];
+const WEEK_DAYS = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+const MONTH_NAMES = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
 let currentYear = 2026;
 let currentMonth = 0;
@@ -23,88 +23,90 @@ function renderWeekHeaders() {
   });
 }
 
-// Render calendar
+// Render calendar days
 function renderCalendar(year, month) {
   renderWeekHeaders();
-
   const firstDayIndex = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
-
   monthTitle.textContent = `${MONTH_NAMES[month]} ${year}`;
 
   // Empty slots
-  for (let i = 0; i < firstDayIndex; i++) {
+  for(let i=0;i<firstDayIndex;i++){
     const empty = document.createElement("div");
-    empty.classList.add("day", "empty");
+    empty.classList.add("day","empty");
     calendar.appendChild(empty);
   }
 
   const today = new Date();
-
-  for (let day = 1; day <= daysInMonth; day++) {
+  for(let day=1; day<=daysInMonth; day++){
     const dayCell = document.createElement("div");
     dayCell.classList.add("day");
     dayCell.textContent = day;
-
-    if (
-      day === today.getDate() &&
-      month === today.getMonth() &&
-      year === today.getFullYear()
-    ) {
+    if(day===today.getDate() && month===today.getMonth() && year===today.getFullYear()){
       dayCell.classList.add("selected");
     }
-
     calendar.appendChild(dayCell);
   }
 }
 
 // Navigation
-function goToNextMonth() {
+function goToNextMonth(){
   currentMonth++;
-  if (currentMonth > 11) {
-    currentMonth = 0;
-    currentYear++;
-  }
-  renderCalendar(currentYear, currentMonth);
+  if(currentMonth>11){ currentMonth=0; currentYear++; }
+  renderCalendar(currentYear,currentMonth);
 }
-
-function goToPrevMonth() {
+function goToPrevMonth(){
   currentMonth--;
-  if (currentMonth < 0) {
-    currentMonth = 11;
-    currentYear--;
-  }
-  renderCalendar(currentYear, currentMonth);
+  if(currentMonth<0){ currentMonth=11; currentYear--; }
+  renderCalendar(currentYear,currentMonth);
 }
 
-// Buttons (MATCH IDs)
 document.getElementById("nextBtn").addEventListener("click", goToNextMonth);
 document.getElementById("prevBtn").addEventListener("click", goToPrevMonth);
 
-// Initial render
-renderCalendar(currentYear, currentMonth);
+renderCalendar(currentYear,currentMonth);
 
-/* ===== SWIPE LOGIC ===== */
-const wrapper = document.getElementById("calendar-wrapper");
-
-let startX = 0;
-let endX = 0;
-
-wrapper.addEventListener("touchstart", e => {
-  startX = e.touches[0].clientX;
-});
-
-wrapper.addEventListener("touchend", e => {
+/* ===== SWIPE ===== */
+let startX=0, endX=0;
+wrapper.addEventListener("touchstart", e => startX=e.touches[0].clientX);
+wrapper.addEventListener("touchend", e=>{
   endX = e.changedTouches[0].clientX;
-  handleSwipe();
+  const diff = startX-endX;
+  if(diff>50) goToNextMonth();
+  else if(diff<-50) goToPrevMonth();
 });
 
-function handleSwipe() {
-  const diff = startX - endX;
+/* ===== DATE CLICK + EVENT BAR ===== */
+calendar.addEventListener("click",(e)=>{
+  if(!e.target.classList.contains("day") || e.target.classList.contains("empty")) return;
 
-  if (diff > 50) {
-    goToNextMonth();
-  } else if (diff < -50) {
-    goToPrevMonth();
-  }
+  // Highlight selected day
+  document.querySelectorAll(".day").forEach(d=>d.classList.remove("selected"));
+  e.target.classList.add("selected");
+
+  // Set event text
+  const day = e.target.textContent;
+  eventText.textContent = `${MONTH_NAMES[currentMonth]} ${day}, ${currentYear}`;
+
+  // Show overlay & event bar
+  overlay.classList.remove("hidden");
+  eventBar.classList.remove("hidden");
+
+  // Blur calendar
+  wrapper.classList.add("blur-background");
+});
+
+/* ===== CLOSE EVENT BAR ===== */
+function closeEvent(){
+  overlay.classList.add("hidden");
+  eventBar.classList.add("hidden");
+  wrapper.classList.remove("blur-background");
 }
+
+overlay.addEventListener("click", closeEvent);
+addEventBtn.addEventListener("click", closeEvent);
+
+// Optional: ESC key
+document.addEventListener("keydown",(e)=>{
+  if(e.key==="Escape") closeEvent();
+});

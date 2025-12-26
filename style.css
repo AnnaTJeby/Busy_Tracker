@@ -101,3 +101,116 @@ body {
   background: transparent;
   cursor: default;
 }
+.event-bar {
+  position: fixed;
+  top: 50%;
+  right: 100px;
+  transform: translateY(-50%);
+  width: 300px;
+  height: 300px;
+  max-width: 700px;
+  background: rgba(30, 42, 68, 0.95);
+  border-radius: 16px;
+  padding: 14px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  backdrop-filter: blur(10px);
+  z-index: 100;
+}
+
+.event-bar.hidden {
+  display: none;
+}
+
+.event-info {
+  font-size: 16px;
+  color: #e5ecff;
+}
+
+#addEventBtn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+#addEventBtn:hover {
+  background: #1d4ed8;
+}
+/* Full-screen overlay */
+#event-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(6px); /* blur background */
+  background: rgba(0,0,0,0.4); /* semi-transparent dark overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 200;
+}
+
+/* Hidden by default */
+#event-overlay.hidden {
+  display: none;
+}
+
+/* Event box stays same square */
+.event-bar {
+  width: 300px;
+  height: 300px;
+  background: rgba(30, 42, 68, 0.95);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+/* Overlay to blur background */
+#event-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(6px);
+  background: rgba(0,0,0,0.4);
+  display: none; /* hidden by default */
+  z-index: 200;
+}
+
+/* Center the event bar */
+.event-bar {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 201;
+}
+/* Blur effect */
+.blur-background {
+  filter: blur(6px);
+  pointer-events: none; /* prevent interaction while blurred */
+  transition: filter 0.3s ease;
+}
+
+/* Overlay for dimming background */
+#event-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.4);
+  display: none; /* hidden by default */
+  z-index: 100;
+}
+
